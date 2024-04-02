@@ -1,0 +1,25 @@
+install.packages("mlbench")
+install.packages("caret")
+install.packages("randomForest")
+library(randomForest)
+library(mlbench)
+library(caret)
+install.packages("ggplot2")
+library(ggplot2)
+
+
+data(iris)
+head(iris)
+summary(iris)
+set.seed(123)
+sample_index<-sample(1:nrow(iris),0.7*nrow(iris))
+training_data<-iris[sample_index,]
+testing_data<-iris[-sample_index,]
+library(rpart)
+model<-rpart(Species~.,data=training_data,method="class")
+predictions<-predict(model, testing_data,type="class")
+confusion_matrix<-table(predictions,testing_data$Species)
+accuracy<-sum(diag(confusion_matrix))/sum(confusion_matrix)
+print("Confusion Matrix:")
+print(confusion_matrix)
+print(paste("Accuracy:",accuracy))
